@@ -1,0 +1,29 @@
+CREATE TABLE products (
+    product_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price INT NOT NULL,
+    stock INT NOT NULL,
+    img TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    cart_id INTEGER REFERENCES carts(cart_id)
+);
+
+CREATE TABLE carts (
+    cart_id SERIAL PRIMARY KEY,
+    product_id INTEGER REFERENCES products(product_id)
+);
+
+CREATE TABLE shops (
+    shop_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    product_id INTEGER REFERENCES products(product_id),
+    user_id INTEGER REFERENCES users(user_id)
+);

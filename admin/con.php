@@ -1,0 +1,1 @@
+<?php $con = mysqli_connect('localhost', 'backend', '123', 'shop');
