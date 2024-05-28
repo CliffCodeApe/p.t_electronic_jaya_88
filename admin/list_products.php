@@ -1,8 +1,21 @@
 <?php
 include 'con.php';
 
-$q = "SELECT * FROM products";
-$r = mysqli_query($con, $q);
+
+$search = "";
+
+if(isset($_POST["search"])){
+  $search = $_POST['search'];
+  $q = "SELECT * FROM products WHERE name LIKE ?";
+  $stmt = mysqli_prepare($con, $q);
+  $search_param = "%" . $search . "%";
+  mysqli_stmt_bind_param($stmt, "s", $search_param);
+  mysqli_stmt_execute($stmt);
+  $r = mysqli_stmt_get_result($stmt);
+}else{
+  $q = "SELECT * FROM products";
+  $r = mysqli_query($con, $q);
+}
 ?>
 
 <!DOCTYPE html>
@@ -25,8 +38,11 @@ $r = mysqli_query($con, $q);
         </form>
 
         <h1>List of products</h1>
-
-        <table border="1">
+        <form action="" method="post">
+          <input type="search" name="search" id="" value="<?php echo htmlspecialchars($search);?>">
+          <button type="submit">Search</button>
+        </form>
+          <table border="1">
           <tr>
             <th>ID</th>
             <th>Name</th>
